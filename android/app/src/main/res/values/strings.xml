@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">shop</string>
+    <string name="Email">Електронна пошта</string>
 </resources>
