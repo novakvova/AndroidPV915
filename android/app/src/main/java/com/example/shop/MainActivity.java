@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.example.shop.constants.Urls;
 import com.example.shop.dto.LoginDTO;
+import com.example.shop.network.ImageRequester;
 import com.example.shop.service.NetworkService;
 import com.example.shop.service.Post;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,12 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvInfo;
     private TextInputLayout txtFieldEmail;
+
+    private ImageRequester imageRequester;
+    private NetworkImageView myImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvInfo=findViewById(R.id.tvInfo);
         txtFieldEmail=findViewById(R.id.txtFieldEmail);
+
+        imageRequester = ImageRequester.getInstance();
+        myImage = findViewById(R.id.myimg);
+        String urlImg = Urls.BASE+"/images/1.jpg";
+        imageRequester.setImageFromUrl(myImage, urlImg);
     }
 
     public void handleLogin(View view) {
