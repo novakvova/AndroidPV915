@@ -3,7 +3,12 @@ package com.example.shop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +19,9 @@ import com.example.shop.network.ImageRequester;
 import com.example.shop.service.NetworkService;
 import com.example.shop.service.Post;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageRequester imageRequester;
     private NetworkImageView myImage;
+
+    // constant to compare
+    // the activity result code
+    int SELECT_PICTURE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +53,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleLogin(View view) {
-        txtFieldEmail.setError("Маємо проблему");
+        //txtFieldEmail.setError("Маємо проблему");
+
+        // create an instance of the
+        // intent of the type image
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+
     }
 
     public void onClickRequest(View view) {
@@ -69,5 +92,37 @@ public class MainActivity extends AppCompatActivity {
                         t.printStackTrace();
                     }
                 });
+    }
+
+    // this function is triggered when user
+    // selects the image from the imageChooser
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                Uri uri = data.getData();
+                if (null != uri) {
+                    Bitmap bitmap= null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // initialize byte stream
+                    ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                    // compress Bitmap
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                    // Initialize byte array
+                    byte[] bytes=stream.toByteArray();
+                    // get base64 encoded string
+                    String sImage= Base64.encodeToString(bytes,Base64.DEFAULT);
+                    String app=sImage+"";
+                }
+            }
+        }
     }
 }
