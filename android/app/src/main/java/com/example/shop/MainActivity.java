@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageRequester imageRequester;
     private NetworkImageView myImage;
+    // One Preview Image
+    ImageView IVPreviewImage;
 
     // constant to compare
     // the activity result code
@@ -54,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         myImage = findViewById(R.id.myimg);
         String urlImg = Urls.BASE+"/images/1.jpg";
         imageRequester.setImageFromUrl(myImage, urlImg);
+
+        IVPreviewImage = findViewById(R.id.IVPreviewImage);
+
+
     }
 
     @Override
@@ -131,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 if (null != uri) {
                     Bitmap bitmap= null;
+                    IVPreviewImage.setImageURI(uri);
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
                     } catch (IOException e) {
