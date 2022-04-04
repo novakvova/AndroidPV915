@@ -1,13 +1,64 @@
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using Shop.Web.Data;
+using Shop.Web.Data.Entities.Identity;
+using Shop.Web.Mapper;
+using Shop.Web.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddDbContext<AppEFContext>(options =>
+   options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add services to the container.
+
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 5;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<AppEFContext>().AddDefaultTokenProviders();
+
+// Add services to the container.
+
+builder.Services.AddAutoMapper(typeof(AppMapProfile));
+builder.Services.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Program>());
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<String>("JwtKey")));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters()
+    {
+        IssuerSigningKey = signinKey,
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
 
 builder.Services.AddCors();
 
@@ -16,11 +67,11 @@ app.UseCors(options =>
                 options.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 var dir = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 if (!Directory.Exists(dir))
