@@ -41,7 +41,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UserCardViewHolder> {
             String url = Urls.BASE+user.getPhoto();
             Glide.with(HomeApplication.getAppContext())
                     .load(url)
-                    .apply(new RequestOptions().override(600, 300))
+                    .apply(new RequestOptions().override(600))
                     .into(holder.userimg);
         }
     }
