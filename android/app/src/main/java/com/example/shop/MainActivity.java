@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.shop.account.RegisterActivity;
+import com.example.shop.account.UsersActivity;
 import com.example.shop.constants.Urls;
 import com.example.shop.dto.LoginDTO;
 import com.example.shop.network.ImageRequester;
@@ -76,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.m_register:
                 intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.m_users:
+                intent = new Intent(this, UsersActivity.class);
                 startActivity(intent);
                 return true;
             default:
