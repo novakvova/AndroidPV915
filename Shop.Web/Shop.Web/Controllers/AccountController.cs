@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +30,6 @@ namespace Shop.Web.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
-        {
-            return Ok();
-        }
 
         [HttpPost]
         [Route("register")]
@@ -56,6 +51,7 @@ namespace Shop.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("users")]
         public async Task<IActionResult> Users()
         {
@@ -64,6 +60,27 @@ namespace Shop.Web.Controllers
             return Ok(list);
         }
 
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    if (await _userManager.CheckPasswordAsync(user, model.Password))
+                    {
+                        return Ok(new { token = _jwtTokenService.CreateToken(user) });
+                    }
+                }
+                return BadRequest(new { error = "Користувача не знайдено" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = "Помилка на сервері" });
+            }
+        }
     }
     
 }

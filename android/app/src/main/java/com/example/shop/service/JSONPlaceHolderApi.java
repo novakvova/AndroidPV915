@@ -1,6 +1,6 @@
 package com.example.shop.service;
 
-import com.example.shop.dto.LoginDTO;
+import com.example.shop.account.dto.LoginDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

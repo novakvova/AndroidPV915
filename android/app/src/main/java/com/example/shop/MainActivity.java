@@ -17,13 +17,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.shop.account.LoginActivity;
 import com.example.shop.account.RegisterActivity;
 import com.example.shop.account.UsersActivity;
 import com.example.shop.constants.Urls;
-import com.example.shop.dto.LoginDTO;
+import com.example.shop.account.dto.LoginDTO;
 import com.example.shop.network.ImageRequester;
 import com.example.shop.service.NetworkService;
-import com.example.shop.service.Post;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
@@ -77,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.m_register:
                 intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.m_login:
+                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.m_users:
