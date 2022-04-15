@@ -20,9 +20,11 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.shop.account.LoginActivity;
 import com.example.shop.account.RegisterActivity;
 import com.example.shop.account.UsersActivity;
+import com.example.shop.application.HomeApplication;
 import com.example.shop.constants.Urls;
 import com.example.shop.account.dto.LoginDTO;
 import com.example.shop.network.ImageRequester;
+import com.example.shop.security.JwtSecurityService;
 import com.example.shop.service.NetworkService;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -85,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.m_users:
                 intent = new Intent(this, UsersActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.m_logout:
+                JwtSecurityService jwtService = (JwtSecurityService) HomeApplication.getInstance();
+                jwtService.deleteToken();
+                intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
             default:

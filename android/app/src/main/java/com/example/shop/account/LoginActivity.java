@@ -13,6 +13,8 @@ import com.example.shop.account.dto.AccountResponseDTO;
 import com.example.shop.account.dto.LoginDTO;
 import com.example.shop.account.dto.ValidationRegisterDTO;
 import com.example.shop.account.network.AccountService;
+import com.example.shop.application.HomeApplication;
+import com.example.shop.security.JwtSecurityService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -60,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             AccountResponseDTO data = response.body();
 
-//                            JwtSecurityService jwtService = (JwtSecurityService) HomeApplication.getInstance();
-//                            jwtService.saveJwtToken(data.getToken());
+                            JwtSecurityService jwtService = (JwtSecurityService) HomeApplication.getInstance();
+                            jwtService.saveJwtToken(data.getToken());
 
                             //tvInfo.setText("response is good");
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

@@ -5,4 +5,5 @@
     <string name="password">Пароль</string>
     <string name="email">Ектронна пошта</string>
     <string name="login">Вхід</string>
+    <string name="logout">Вийти</string>
 </resources>
