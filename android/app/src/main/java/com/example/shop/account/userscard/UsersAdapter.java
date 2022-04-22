@@ -18,9 +18,14 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UserCardViewHolder> {
     private List<UserDTO> users;
+    private final OnUserClickListener listener;
+    private final OnUserClickListener editListener;
 
-    public UsersAdapter(List<UserDTO> users) {
+    public UsersAdapter(List<UserDTO> users, OnUserClickListener listener,
+                        OnUserClickListener editListener) {
         this.users = users;
+        this.listener = listener;
+        this.editListener=editListener;
     }
 
     @NonNull
@@ -34,15 +39,28 @@ public class UsersAdapter extends RecyclerView.Adapter<UserCardViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserCardViewHolder holder, int position) {
-        if(users!=null && position<users.size())
-        {
+        if (users != null && position < users.size()) {
             UserDTO user = users.get(position);
             holder.useremail.setText(user.getEmail());
-            String url = Urls.BASE+user.getPhoto();
+            String url = Urls.BASE + user.getPhoto();
             Glide.with(HomeApplication.getAppContext())
                     .load(url)
                     .apply(new RequestOptions().override(600))
                     .into(holder.userimg);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(user);
+                }
+            });
+
+            holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editListener.onItemClick(user);
+                }
+            });
         }
     }
 

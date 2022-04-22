@@ -5,11 +5,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import com.example.shop.R;
 import com.example.shop.account.network.AccountService;
 import com.example.shop.account.userscard.UserDTO;
 import com.example.shop.account.userscard.UsersAdapter;
+import com.example.shop.application.HomeApplication;
 
 import java.util.List;
 
@@ -38,7 +42,9 @@ public class UsersActivity extends AppCompatActivity {
                     public void onResponse(Call<List<UserDTO>> call, Response<List<UserDTO>> response) {
                         if(response.isSuccessful())
                         {
-                            adapter=new UsersAdapter(response.body());
+                            adapter=new UsersAdapter(response.body(),
+                                    UsersActivity.this::onClickUserItem,
+                                    UsersActivity.this::onClickUserEdit);
                             rcvUsers.setAdapter(adapter);
                         }
                     }
@@ -49,5 +55,19 @@ public class UsersActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void onClickUserItem(UserDTO user) {
+        //Toast.makeText(HomeApplication.getAppContext(), user.getEmail(), Toast.LENGTH_SHORT).show();
+        Intent userIntent = new Intent(UsersActivity.this, UserActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("id", user.getId());
+        userIntent.putExtras(b);
+        startActivity(userIntent);
+
+    }
+
+    private void onClickUserEdit(UserDTO user) {
+        Toast.makeText(HomeApplication.getAppContext(), user.getEmail(), Toast.LENGTH_SHORT).show();
     }
 }

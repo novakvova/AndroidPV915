@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="2dp"
-    app:contentPadding="5dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
     android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
     android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
     app:cardBackgroundColor="@android:color/white"
-    app:cardPreventCornerOverlap="true">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_margin="10dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:contentPadding="5dp">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <ImageView
@@ -44,6 +44,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userimg" />
 
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Змінити"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/useremail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

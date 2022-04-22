@@ -74,6 +74,34 @@ namespace Shop.Web.Controllers
             return Ok(_mapper.Map<UserItemViewModel>(user));
         }
 
+        [HttpPut]
+        //[Authorize]
+        [Route("updateuser")]
+        public async Task<IActionResult> UpdateUser(UserEditViewModel model)
+        {
+            //throw new AppException("Email or password is incorrect");
+            Thread.Sleep(1000);
+            var user = _context.Users
+                .FirstOrDefault(x => x.Id == model.Id);
+            if (user == null)
+                return NotFound();
+            if (!string.IsNullOrEmpty(model.Photo))
+            {
+                var img = ImageWorker.FromBase64StringToImage(model.Photo);
+                if (img != null)
+                {
+                    string randomFilename = user.Photo;
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), "uploads", randomFilename);
+                    img.Save(dir, ImageFormat.Jpeg);
+                }
+            }
+            user.PhoneNumber = model.Phone;
+            user.FirstName = model.FirstName;
+            user.SecondName=model.SecondName;
+            _context.SaveChanges();
+            return Ok(_mapper.Map<UserItemViewModel>(user));
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
