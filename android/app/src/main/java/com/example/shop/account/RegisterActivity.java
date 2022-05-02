@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.shop.BaseActivity;
 import com.example.shop.R;
 import com.example.shop.account.dto.AccountResponseDTO;
 import com.example.shop.account.dto.RegisterDTO;
@@ -31,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     EditText txtEmail;
     EditText txtFirstName;

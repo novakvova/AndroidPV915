@@ -35,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView tvInfo;
     private TextInputLayout txtFieldEmail;
@@ -64,41 +64,6 @@ public class MainActivity extends AppCompatActivity {
         IVPreviewImage = findViewById(R.id.IVPreviewImage);
 
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.m_register:
-                intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.m_login:
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.m_users:
-                intent = new Intent(this, UsersActivity.class);
-                startActivity(intent);
-                return true;
-
-            case R.id.m_logout:
-                JwtSecurityService jwtService = (JwtSecurityService) HomeApplication.getInstance();
-                jwtService.deleteToken();
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void handleLogin(View view) {

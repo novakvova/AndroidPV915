@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.shop.BaseActivity;
 import com.example.shop.R;
 import com.example.shop.account.network.AccountService;
 import com.example.shop.account.userscard.UserDTO;
@@ -21,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UsersActivity extends AppCompatActivity {
+public class UsersActivity extends BaseActivity {
 
     private UsersAdapter adapter;
     private RecyclerView rcvUsers;

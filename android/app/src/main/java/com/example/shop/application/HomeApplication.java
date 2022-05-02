@@ -69,4 +69,11 @@ public class HomeApplication extends Application implements JwtSecurityService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isAuth() {
+        if(getToken().equals(""))
+            return false;
+        return true;
+    }
 }
